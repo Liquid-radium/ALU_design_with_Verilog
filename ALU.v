@@ -63,17 +63,55 @@ left_rotate u1(
 
 always @(*) begin
     case (alu_control)
-        4'd0:  y = a_or_b;
-        4'd1:  y = a_and_b;
-        4'd2:  y = a_nand_b;
-        4'd3:  y = a_nor_b;
-        4'd4:  y = a_not_b;
-        4'd5:  y = a_xor_b;
-        4'd6:  y = a_sum_b;
-        4'd7:  y = a_sub_b;
-        4'd8:  y = a_shiftl_b;
-        4'd9:  y = a_shiftr_b;
-        4'd10: y = a_cmp_b;
+        4'd0: begin
+            y = a_or_b;
+            zero_flag = (y==0);
+        end
+        4'd1:  begin
+            y = a_and_b;
+            zero_flag = (y==0);
+        end
+        4'd2:  begin
+            y = a_nand_b;
+            zero_flag = (y==0);
+        end
+        4'd3:  begin
+            y = a_nor_b;
+            zero_flag = (y==0);
+        end
+        4'd4:  begin
+            y = a_not_b;
+            zero_flag = (y==0);
+        end
+        4'd5:  begin
+            y = a_xor_b;
+            zero_flag = (y==0);
+        end
+        4'd6:  begin
+            y = a_sum_b;
+            zero_flag = (y==0);
+        end
+        4'd7:  begin
+            y = a_sub_b;
+            zero_flag = (y==0);
+            neg flag = (y[31] == 1);
+            overflow_flag = (y[30]&y[31] == 1);
+        end
+        4'd8:  begin
+            y = a_shiftl_b;
+            zero_flag = (y==0);
+            neg flag = (y[31] == 1);
+            overflow_flag = (y[30]&y[31] == 1);
+        end
+        4'd9:  begin
+            y = a_shiftr_b;
+            zero_flag = (y==0);
+            neg flag = (y[31] == 1);
+        end
+        4'd10: begin
+            y = a_cmp_b;
+            zero_flag = (y==0);
+        end
         4'd11: y = a_lror_b;
         4'd12: y = a_rror_b;
         default: y = 1'b0;  // default case if sel is 14 or 15
