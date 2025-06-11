@@ -56,7 +56,7 @@ module left_rotate(
     output [31:0] out
 );
 wire [31:0]cout, [31:0]diff;
-sub u3(
+sub u4(
     .a(32),
     .b(b),
     .diff(diff),
