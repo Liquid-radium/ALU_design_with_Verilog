@@ -19,7 +19,7 @@ endmodule
 module cmp(
     input  [31:0] a,
     input  [31:0] b,
-    output        out,
+    output [31:0] out,
     output        zero
 );
     wire [31:0] diff;
@@ -32,7 +32,7 @@ module cmp(
         .cout(dummy)
     );
 
-    assign out  = (a > b);       
+    assign out  = (a>b);       
     assign zero = (diff == 0);
 endmodule
 

@@ -7,6 +7,7 @@ module alu(
     output reg neg_flag,
     output reg zero_flag,
     output reg overflow_flag
+
 );
 
     wire [31:0] a_or_b     = a | b;
@@ -24,13 +25,20 @@ module alu(
     wire [31:0] a_rror_b;
     wire [31:0] a_lror_b;
 
-    // Modules with unique instance names
-    adder adder_u (
-        .a(a), .b(b), .sum(a_sum_b), .cout(carry_flag) // You may set carry_flag inside always
+    wire cout_add, cout_sub;
+
+    adder u1 (
+        .a(a),
+        .b(b),
+        .sum(a_sum_b),
+        .cout(cout_add)
     );
 
-    sub sub_u (
-        .a(a), .b(b), .diff(a_sub_b), .cout(carry_flag)
+    sub u2 (
+        .a(a),
+        .b(b),
+        .diff(a_sub_b),
+        .cout(cout_sub)
     );
 
     cmp cmp_u (
@@ -38,79 +46,64 @@ module alu(
     );
 
     right_rotate rr_u (
-        .a(a), .b(b), .out(a_rror_b)
+        .a(a), .b(b[4:0]), .out(a_rror_b)
     );
 
     left_rotate lr_u (
-        .a(a), .b(b), .out(a_lror_b)
+        .a(a), .b(b[4:0]), .out(a_lror_b)
     );
 
     // ALU logic
     always @(*) begin
-        carry_flag = 0;
-        neg_flag = 0;
-        zero_flag = 0;
-        overflow_flag = 0;
 
         case (alu_control)
             4'd0: begin
                 y = a_or_b;
-                zero_flag = (y == 0);
             end
             4'd1: begin
                 y = a_and_b;
-                zero_flag = (y == 0);
             end
             4'd2: begin
                 y = a_nand_b;
-                zero_flag = (y == 0);
             end
             4'd3: begin
                 y = a_nor_b;
-                zero_flag = (y == 0);
             end
             4'd4: begin
                 y = a_not_b;
-                zero_flag = (y == 0);
             end
             4'd5: begin
                 y = a_xor_b;
-                zero_flag = (y == 0);
             end
             4'd6: begin
                 y = a_sum_b;
-                zero_flag = (y == 0);
-                neg_flag = y[31];
+                carry_flag = cout_add;
             end
             4'd7: begin
                 y = a_sub_b;
-                zero_flag = (y == 0);
-                neg_flag = y[31];
+                carry_flag = cout_sub;
                 overflow_flag = ((a[31] ^ b[31]) & (a[31] ^ y[31]));
             end
             4'd8: begin
                 y = a_shiftl_b;
-                zero_flag = (y == 0);
-                neg_flag = y[31];
             end
             4'd9: begin
                 y = a_shiftr_b;
-                zero_flag = (y == 0);
-                neg_flag = y[31];
             end
             4'd10: begin
                 y = a_cmp_b;
-                zero_flag = (zero);
             end
             4'd11: y = a_lror_b;
             4'd12: y = a_rror_b;
             default: y = 32'b0;
         endcase
+        zero_flag = (y==0);
+        neg_flag = y[31];
     end
 
 initial begin
     $dumpfile("waves.vcd");
     $dumpvars(0,ALU.v);
 end
- 
+
 endmodule
