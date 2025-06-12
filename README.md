@@ -29,7 +29,7 @@ Additional status flags:
 * `carry_flag`: Set based on arithmetic carry-out
 * `overflow_flag`: Set on arithmetic overflow
 
-## 📁 File Structure
+## File Structure
 
 ```
 .
