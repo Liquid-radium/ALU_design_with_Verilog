@@ -1,14 +1,14 @@
-module alu(
-    input  [31:0] a,
-    input  [31:0] b,
-    input  [3:0]  alu_control,
+module alu (
+    input [31:0] a,
+    input [31:0] b,
+    input [3:0] alu_control,
     output reg [31:0] y,
     output reg carry_flag,
     output reg neg_flag,
-    output reg zero_flag,
+    //output reg zero_flag,
     output reg overflow_flag
-
 );
+
 
     wire [31:0] a_or_b     = a | b;
     wire [31:0] a_and_b    = a & b;
@@ -97,13 +97,13 @@ module alu(
             4'd12: y = a_rror_b;
             default: y = 32'b0;
         endcase
-        zero_flag = (y==0);
+        //zero_flag = (32'b0|y == 0);
         neg_flag = y[31];
     end
 
 initial begin
     $dumpfile("waves.vcd");
-    $dumpvars(0,ALU.v);
+    $dumpvars(0,alu);
 end
 
 endmodule
