@@ -26,15 +26,15 @@ module alu(
 
     // Modules with unique instance names
     adder adder_u (
-        .a(a), .b(b), .sum(a_sum_b), .cout() // You may set carry_flag inside always
+        .a(a), .b(b), .sum(a_sum_b), .cout(carry_flag) // You may set carry_flag inside always
     );
 
     sub sub_u (
-        .a(a), .b(b), .diff(a_sub_b), .cout()
+        .a(a), .b(b), .diff(a_sub_b), .cout(carry_flag)
     );
 
     cmp cmp_u (
-        .a(a), .b(b), .out(a_cmp_b), .zero()
+        .a(a), .b(b), .out(a_cmp_b), .zero(zero_flag)
     );
 
     right_rotate rr_u (
@@ -80,7 +80,6 @@ module alu(
             4'd6: begin
                 y = a_sum_b;
                 zero_flag = (y == 0);
-                carry_flag = y < a;  // crude unsigned carry
                 neg_flag = y[31];
             end
             4'd7: begin
