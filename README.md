@@ -68,7 +68,7 @@ Test cases cover edge scenarios like:
 
 This project is open-source under the MIT License.
 
-## ✍️ Author
+## Author
 
 Shruti Hegde
 GitHub: [@Liquid-radium](https://github.com/Liquid-radium)
