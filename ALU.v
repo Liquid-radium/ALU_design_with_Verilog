@@ -100,7 +100,7 @@ module alu(
             end
             4'd10: begin
                 y = a_cmp_b;
-                zero_flag = (y == 0);
+                zero_flag = (zero);
             end
             4'd11: y = a_lror_b;
             4'd12: y = a_rror_b;
