@@ -108,4 +108,9 @@ module alu(
         endcase
     end
 
+initial begin
+    $dumpfile("waves.vcd");
+    $dumpvars(0,ALU.v);
+end
+ 
 endmodule
